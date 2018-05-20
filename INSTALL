@@ -1,0 +1,10 @@
+INSTALL
+
+1. Unpack tar.bz2 archive
+2. Run 'qmake-qt4' or 'qmake' (if qmake is version 4) from user
+3. Rum 'make' from user
+4. Run 'make install' from root
+
+For uninstall run 'make uninstall' from root
+
+See http://www.kochkin.tk/doku.php/screengen/010-index

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+lupdate-qt4 -no-obsolete screengen.pro -ts screengen_ru_RU.ts
+lrelease-qt4 screengen_ru_RU.ts
