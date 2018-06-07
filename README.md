@@ -6,3 +6,5 @@ Last compile on Fedora 28 with ffmpeg 4.0 and QT5.10.1.
 Example video - https://youtu.be/FGfhkvHVTcQ
 
 The project no longer develops. Free for fork and further development.
+
+![Example](http://ipic.su/img/fs/BigBuckBunny.1528404865.jpg)
