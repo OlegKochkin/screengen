@@ -52,7 +52,7 @@
 2015-08-03 (1.9)
 * Fixed deprecated call of FFMpeg (2.4.3).
 
-(1.10)
+2017-09-12 (1.10)
 * Fixed deprecated call of libAVCodec 57.63.103.
 * Fixed for H264 codec.
 * Added parameter (from console only) "logLevel" - FFMpeg log. Available:
