@@ -1,2 +1,2 @@
-#define VERSION_NUMBER "1.11.dev"
+#define VERSION_NUMBER "1.10"
 #define BUILD_NUMBER "2017.09.12"
