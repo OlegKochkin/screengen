@@ -1,13 +1,12 @@
 INSTALL
 
-1. Unpack tar.bz2 archive
-2. Run 'qmake-qt5' or 'qmake' (if qmake is version 5) from user
-3. Rum 'make' from user
-4. Run 'make install' from root
+$ git clone https://github.com/OlegKochkin/screengen
+$ cd screengen
+$ qmake
+$ make
+# make install
 
-For uninstall run 'make uninstall' from root
-
-https://github.com/OlegKochkin/screengen
+For uninstall run 'make uninstall' in screengen directory from root
 
 For docker image Alpine Linux v3.7:
 
@@ -30,4 +29,4 @@ Put file "Big Buck Bunny.mkv" in "/mnt/capture/sg" and run:
 sudo docker exec -it screengen-alpine screengen "/sg/Big Buck Bunny.mkv" --outFolder /sg
 In "/mnt/capture/sg" should appear "Big Buck Bunny.mkv.jpg"
 
-Docker image - olkoch/screengen
+Test docker image - olkoch/screengen
