@@ -1,6 +1,6 @@
 #include "build_number.h"
 #define VERSION VERSION_NUMBER "-" BUILD_NUMBER
-#define COPYRIGHT "ScreenGen. Version " VERSION_NUMBER " (build " BUILD_NUMBER "). Copyright (C) 2012-2017 Oleg Kochkin (www.kochkin.tk). License - GPL."
+#define COPYRIGHT "ScreenGen. Version " VERSION_NUMBER " (build " BUILD_NUMBER "). By Oleg Kochkin. License - GPL."
 
 #include <QApplication>
 #include <QPainter>
