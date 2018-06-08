@@ -13,7 +13,10 @@ OBJECTS_DIR = build
 
 TRANSLATIONS += screengen_ru_RU.ts
 
-INSTALLS += target translations
+INSTALLS += target translations sg_ru
 target.path = /usr/bin/
 translations.path = /usr/share/screengen/translations/
 translations.files += screengen_ru_RU.qm
+
+sg_ru.path = /usr/bin
+sg_ru.files += screengen-ru
