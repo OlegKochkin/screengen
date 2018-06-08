@@ -1,13 +1,13 @@
-// Shadow from picture, Copyright (C) 2012 Oleg Kochkin. License GPL.
+// Shadow from picture, By Oleg Kochkin 2012. License GPL.
 
 #include "qshadow.h"
 
-// Создаёт тень по алгоритму гауссового размывания.
-// img - Картинка с альфа каналом. Для точек с отсутствущей прозрачностью формируется тень.
-// sigma - Порог размытия (от 1 до 100).
-// color - Цвет тени.
-// Возвращает картинку в виде тени. Картинка больше img на sigma*2 по горизонтали и вертикали.
-// Если входное значение sigma выходит из диапазона (1-100), sigma модифицируется до крайнего значения и после выхода из функции sigma имеет новое значение.
+// Creates a shadow by the Gaussian blur algorithm.
+// img - Picture with alpha channel. For points with missing transparency a shadow is formed.
+// sigma - Blur threshold (from 1 to 100).
+// color - The color of the shadow.
+// Returns the image as a shadow. The picture is more img on sigma*2 horizontally and vertically.
+// If the input value sigma goes out of range (1-100), sigma is modified to the extreme value and after the output from the function sigma has a new value.
 
 QImage getShadow(QImage img, int &sigma, QColor color){
 	if (sigma>100) sigma=100;
