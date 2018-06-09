@@ -14,7 +14,7 @@ docker pull alpine
 docker run --name screengen-alpine -v /mnt/capture/sg:/sg -it alpine /bin/sh
 
 apk update
-apk add ffmpeg ffmpeg-libs ffmpeg-dev qt-dev make g++ git ttf-liberation mc icu-libs
+apk add ffmpeg ffmpeg-libs ffmpeg-dev qt-dev make g++ git ttf-liberation icu-libs
 
 mkdir /opt
 cd /opt
