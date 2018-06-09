@@ -25,6 +25,8 @@ make
 make install
 exit
 
+docker start screengen-alpine
+
 Put file "Big Buck Bunny.mkv" in "/mnt/capture/sg" and run:
 sudo docker exec -it screengen-alpine screengen "/sg/Big Buck Bunny.mkv" --outFolder /sg
 In "/mnt/capture/sg" should appear "Big Buck Bunny.mkv.jpg"
