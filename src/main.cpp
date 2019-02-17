@@ -344,14 +344,14 @@ int main(int argc, char *argv[]){
 	int vertCount = frames / horCount;
 	
 	int fullLength = 	video->iDuration / 1000;
-	QTime timeBeginT;
-	QTime timeEndT;
+	QTime timeBeginT (0,0,0,0);
+	QTime timeEndT (0,0,0,0);
 	int timeBegin = timeBeginT.msecsTo(QTime::fromString(offsetBegin,"hh:mm:ss"));
 	int timeEnd = timeEndT.msecsTo(QTime::fromString(offsetEnd,"hh:mm:ss"));
 	int length = fullLength - (timeBegin+timeEnd);
 
 	if (timeStep != "00:00:00"){
-		QTime timeStepT;
+		QTime timeStepT (0,0,0,0);
 		int tStep = timeStepT.msecsTo(QTime::fromString(timeStep,"hh:mm:ss"));
 		vertCount = (length / tStep) / horCount;
 		vertCount++;

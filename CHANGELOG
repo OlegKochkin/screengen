@@ -66,3 +66,6 @@
    48  DEBUG
    56  TRACE
 * Added video bitrate info if available.
+
+2019-02-17 (1.11)
+* Fixed offsetBegin and oofsetEnd parameters
