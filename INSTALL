@@ -1,5 +1,7 @@
 INSTALL
 
+Depends: qt5-qtbase, qt5-qtbase-devel, ffmpeg, ffmpeg-devel
+
 $ git clone https://github.com/OlegKochkin/screengen
 $ cd screengen
 $ qmake-qt5
