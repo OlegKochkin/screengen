@@ -2,7 +2,6 @@ TEMPLATE = app
 TARGET = screengen
 DEPENDPATH += . src
 INCLUDEPATH += . /usr/include/ffmpeg
-QT += widgets
 
 # Input
 SOURCES += src/main.cpp src/qffmpeg.cpp src/qshadow.cpp

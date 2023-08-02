@@ -1,7 +1,7 @@
 # screengen
 Creates the list thumbnails of the video file in console. Based on ffmpeg and QT. About 60 parameters for setting.
 
-Last compile on Fedora 28 with ffmpeg 4.0 and QT5.10.1.
+Last compile on Fedora 38 with ffmpeg 6.0 and QT5.15.10-1.
 
 Example video - https://youtu.be/FGfhkvHVTcQ
 

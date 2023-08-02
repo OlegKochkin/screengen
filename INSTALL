@@ -2,33 +2,8 @@ INSTALL
 
 $ git clone https://github.com/OlegKochkin/screengen
 $ cd screengen
-$ qmake
-$ make
+$ qmake-qt5
+$ make -s
 # make install
 
 For uninstall run 'make uninstall' in screengen directory from root
-
-For docker image Alpine Linux v3.7:
-
-docker pull alpine
-docker run --name screengen-alpine -v /mnt/capture/sg:/sg -it alpine /bin/sh
-
-apk update
-apk add ffmpeg ffmpeg-libs ffmpeg-dev qt-dev make g++ git ttf-liberation icu-libs
-
-mkdir /opt
-cd /opt
-git clone https://github.com/OlegKochkin/screengen
-cd /opt/screengen
-qmake
-make
-make install
-exit
-
-docker start screengen-alpine
-
-Put file "Big Buck Bunny.mkv" in "/mnt/capture/sg" and run:
-sudo docker exec -it screengen-alpine screengen "/sg/Big Buck Bunny.mkv" --outFolder /sg
-In "/mnt/capture/sg" should appear "Big Buck Bunny.mkv.jpg"
-
-Test docker image - olkoch/screengen
