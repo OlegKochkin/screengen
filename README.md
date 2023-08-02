@@ -5,8 +5,6 @@ Last compile on Fedora 38 with ffmpeg 6.0 and QT5.15.10-1.
 
 Example video - https://youtu.be/FGfhkvHVTcQ
 
-The project no longer develops.
-
 ![Example](.pics/example.jpg)
 
 ```
