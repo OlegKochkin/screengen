@@ -103,9 +103,9 @@ TFfmpeg::TFfmpeg(QString videoFile, int logLevel){
         av_fourcc_make_string (vCodecTagC, vCodecPar->codec_tag);
 		vCodecTag = QString (vCodecTagC);
 		}
-	char aChC[32];
 	if (aStreamNumber != -1){
-		av_get_channel_layout_string (aChC, sizeof(aChC), aCodecPar->channels, aCodecPar->channel_layout);
+        char aChC[128];
+        av_channel_layout_describe(&aCodecPar->ch_layout, aChC, sizeof(aChC));
 // Channels count
 		aChannels = QString (aChC);
 // Freq
@@ -119,6 +119,7 @@ TFfmpeg::TFfmpeg(QString videoFile, int logLevel){
 
 // Calculate stream bitrate (only audio worked)
 int TFfmpeg::get_bit_rate(AVCodecParameters *ctx){
+    AVChannelLayout *chs = &ctx->ch_layout;
 	int bit_rate = 0;
 	int bits_per_sample;
 
@@ -133,7 +134,7 @@ int TFfmpeg::get_bit_rate(AVCodecParameters *ctx){
 			break;
 		case AVMEDIA_TYPE_AUDIO:
 			bits_per_sample = av_get_bits_per_sample(ctx->codec_id);
-			if (bits_per_sample) bit_rate = ctx->sample_rate * ctx->channels * bits_per_sample;
+			if (bits_per_sample) bit_rate = ctx->sample_rate * chs->nb_channels * bits_per_sample;
 				else bit_rate = ctx->bit_rate;
 			break;
 		default:
