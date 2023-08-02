@@ -2,10 +2,9 @@
 #define VERSION VERSION_NUMBER "-" BUILD_NUMBER
 #define COPYRIGHT "ScreenGen. Version " VERSION_NUMBER " (build " BUILD_NUMBER "). By Oleg Kochkin. License GPL."
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QPainter>
 #include <QTime>
-//#include <QTextCodec>
 #include <QTranslator>
 #include <QFileInfo>
 #include <QSettings>
@@ -17,14 +16,13 @@ QColor getColorFromString (QString tc);
 int fontWeightFromString (QString w, int def);
 
 int main(int argc, char *argv[]){
-	QApplication app(argc, argv, false);
-//	QTextCodec *codec = QTextCodec::codecForName("UTF8");
-//	QTextCodec::setCodecForCStrings(codec);
+    setenv("QT_QPA_PLATFORM","offscreen",1);
+	QGuiApplication app(argc, argv, false);
 	QTranslator translator;
 	translator.load ("screengen_"+QLocale::system().name()+".qm","/usr/share/screengen/translations/");
 	app.installTranslator (&translator);
 
-	QTextStream(stdout)<<COPYRIGHT<<"\n"<<endl;
+	QTextStream(stdout)<<COPYRIGHT<<"\n"<<Qt::endl;
 // Videofile
 	QString videoFile = "";
 // Preset section
@@ -375,7 +373,6 @@ int main(int argc, char *argv[]){
 		
 	QFont headerFont (fontHeaderName, fontHeaderSize, fontHeaderWeight, fontHeaderItalic);
 	QFontMetrics fm (headerFont);
-//	int headerH=(fontHeaderSize+(double)5)*5;
 	int headerH=(fontHeaderSize+(double)8)*5;
 	int headerX=listBorder+frameBorder;
 
@@ -422,9 +419,7 @@ int main(int argc, char *argv[]){
 		QString videoInfo = video->getVInfo();
 		QString audioInfo = video->getAInfo();
 
-//		int step=fontHeaderSize+1, num=1, offs=8;
 		int step=fontHeaderSize+4, num=1, offs=8;
-//		int dx = fontHeaderSize*10;
 		int dx = fontHeaderSize*12;
 		
 		QImage imText (imList.width()-(listBorder*2+frameBorder*2),headerH, QImage::Format_ARGB32);
@@ -436,7 +431,7 @@ int main(int argc, char *argv[]){
 		pText.setPen (tPen);
 		if (! descr.isEmpty()){
 			pText.drawText (10, num*step+offs, descr);
-			pText.drawLine (10, step+offs*2, fm.width(descr)+20, step+offs*2);
+			pText.drawLine (10, step+offs*2, fm.horizontalAdvance(descr)+20, step+offs*2);
 			num+=2;
 			}
 		pText.drawText(10,num*step+offs,QObject::tr("File name:"));

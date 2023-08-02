@@ -1,12 +1,10 @@
+#include <iostream>
 #include "qffmpeg.h"
 
 // Open videofile, codecs init, get streams info
 TFfmpeg::TFfmpeg(QString videoFile, int logLevel){
 	error=0;
 	av_log_set_level(logLevel);
-	avcodec_register_all();
-	av_register_all();
-
 	pAVFormatContext = avformat_alloc_context();
 	if (avformat_open_input (&pAVFormatContext, videoFile.toLocal8Bit(), NULL, NULL)!=0){
 		QTextStream(stdout)<<"Error open file: "<<videoFile<<"\n";
@@ -47,7 +45,7 @@ TFfmpeg::TFfmpeg(QString videoFile, int logLevel){
 	vCodec = avcodec_find_decoder (vCodecPar->codec_id);
 	vCodecContext = avcodec_alloc_context3 (vCodec);
 	avcodec_parameters_to_context (vCodecContext, vStream->codecpar);
-	av_codec_set_pkt_timebase (vCodecContext, vStream->time_base);
+    vCodecContext->pkt_timebase = vStream->time_base;
 
 	if (avcodec_open2 (vCodecContext, vCodec, NULL) < 0){
 		QTextStream(stdout)<<"Not open video codec in "<<videoFile<<"\n";
@@ -93,16 +91,16 @@ TFfmpeg::TFfmpeg(QString videoFile, int logLevel){
 			aStreamNumber=i;
 			break;
 			}
-	if (aStreamNumber == -1) QTextStream(stdout)<<"Not audio stream in\n"<<videoFile<<endl;
+	if (aStreamNumber == -1) QTextStream(stdout)<<"Not audio stream in\n"<<videoFile<<Qt::endl;
 	else{
 		aCodecPar = pAVFormatContext->streams[aStreamNumber]->codecpar;
 		aCodec = avcodec_find_decoder (aCodecPar->codec_id);
-		if (aCodec == NULL) QTextStream(stdout)<<"Not open audio codec in"<<videoFile<<"\n"<<endl;
+		if (aCodec == NULL) QTextStream(stdout)<<"Not open audio codec in"<<videoFile<<"\n"<<Qt::endl;
 		}
 
 	if (vCodecPar->codec_tag > 0){
 		char vCodecTagC[32];
-		av_get_codec_tag_string (vCodecTagC, sizeof(vCodecTagC), vCodecPar->codec_tag);
+        av_fourcc_make_string (vCodecTagC, vCodecPar->codec_tag);
 		vCodecTag = QString (vCodecTagC);
 		}
 	char aChC[32];

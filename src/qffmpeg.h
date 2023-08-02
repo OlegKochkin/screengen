@@ -8,10 +8,10 @@
 extern "C" {
   #include <libavcodec/avcodec.h>
   #include <libavformat/avformat.h>
-	#include <libswscale/swscale.h>
-	#include <libavutil/mathematics.h>	// Added for Kubuntu (patch from srog (qt-apps.org))
-	#include <libavutil/imgutils.h>
-	#include <libavcodec/version.h>
+  #include <libswscale/swscale.h>
+  #include <libavutil/mathematics.h>	// Added for Kubuntu (patch from srog (qt-apps.org))
+  #include <libavutil/imgutils.h>
+  #include <libavcodec/version.h>
   }
 
 class TFfmpeg{
@@ -32,5 +32,5 @@ private:
 	AVFormatContext *pAVFormatContext;
 	AVCodecContext *vCodecContext;
 	AVCodecParameters *vCodecPar, *aCodecPar;
-	AVCodec *vCodec, *aCodec;
+	const AVCodec *vCodec, *aCodec;
 };
