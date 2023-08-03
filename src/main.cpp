@@ -19,8 +19,6 @@ int fontWeightFromString (QString w, int def);
 int main(int argc, char *argv[]){
     setenv("QT_QPA_PLATFORM","offscreen",1);
 	QGuiApplication app(argc, argv, false);
-//	QTextCodec *codec = QTextCodec::codecForName("UTF8");
-//	QTextCodec::setCodecForCStrings(codec);
 	QTranslator translator;
 	translator.load ("screengen_"+QLocale::system().name()+".qm","/usr/share/screengen/translations/");
 	app.installTranslator (&translator);
