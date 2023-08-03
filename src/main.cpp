@@ -1,10 +1,11 @@
 #include "build_number.h"
 #define VERSION VERSION_NUMBER "-" BUILD_NUMBER
-#define COPYRIGHT "ScreenGen. Version " VERSION_NUMBER " (build " BUILD_NUMBER "). By Oleg Kochkin. License GPL."
+#define COPYRIGHT "ScreenGen. Version " VERSION_NUMBER " (build " BUILD_NUMBER "). By Oleg Kochkin. License - GPL."
 
 #include <QGuiApplication>
 #include <QPainter>
 #include <QTime>
+#include <QTextCodec>
 #include <QTranslator>
 #include <QFileInfo>
 #include <QSettings>
@@ -18,6 +19,8 @@ int fontWeightFromString (QString w, int def);
 int main(int argc, char *argv[]){
     setenv("QT_QPA_PLATFORM","offscreen",1);
 	QGuiApplication app(argc, argv, false);
+//	QTextCodec *codec = QTextCodec::codecForName("UTF8");
+//	QTextCodec::setCodecForCStrings(codec);
 	QTranslator translator;
 	translator.load ("screengen_"+QLocale::system().name()+".qm","/usr/share/screengen/translations/");
 	app.installTranslator (&translator);
@@ -94,6 +97,7 @@ int main(int argc, char *argv[]){
 	QString stampStart=cfg.value ("stampStart","00:00:00").toString();// Начальное время дла штампа времени
 	bool stampStartFlag = false;
 	int logLevel = -8;
+	double fpm = 0;
 	
 	cfg.setValue ("frames",frames);
 	cfg.setValue ("width",widthList);
@@ -148,6 +152,7 @@ int main(int argc, char *argv[]){
 	cfg.setValue ("timeStep",timeStep);
 	cfg.setValue ("maxRows",maxRows);
 	cfg.setValue ("version",version);
+	cfg.setValue ("fpm",fpm);
 	cfg.endGroup();
 		
 	videoFile = argv[1];
@@ -200,6 +205,7 @@ int main(int argc, char *argv[]){
 	if (QString(argv[i]) == "--presetsList") presetsList=true;
 	if (QString(argv[i]) == "--presetInfo") presetInfo=QString(argv[i+1]);
 	if (QString(argv[i]) == "--timeStep") timeStep=QString(argv[i+1]);
+	if (QString(argv[i]) == "--fpm") fpm=QString(argv[i+1]).toDouble();
 	if (QString(argv[i]) == "--maxRows") maxRows=QString(argv[i+1]).toInt();
 	if (QString(argv[i]) == "--logLevel") logLevel=QString(argv[i+1]).toInt();
 
@@ -305,8 +311,9 @@ int main(int argc, char *argv[]){
 		QTextStream(stdout)<<"   --frameBox                Depth border frame (default - 0)\n";
 		QTextStream(stdout)<<"   --stampDescr              Custom text, located on frame\n";
 		QTextStream(stdout)<<"   --stampDescrPos           Position custom text (default - \"lt\" (LeftTop), (rb, rt, lb, lr))\n";
-		QTextStream(stdout)<<"   --timeStep                The time between frames. If not equal to \"00:00:00\", the parameter \"frames\" are ignored. (default - \"00:00:00\")\n";
-		QTextStream(stdout)<<"   --maxRows                 Maximum rows if use --timeStep. (default - 50)\n";
+		QTextStream(stdout)<<"   --timeStep                Time between frames. If not equal to \"00:00:00\", the parameter \"frames\" are ignored. (default - \"00:00:00\")\n";
+		QTextStream(stdout)<<"   --fpm                     Frames per minute. If not equal to \"0\", the parameter \"frames\" and \"timeStep\" are ignored. (default - \"0\")\n";
+		QTextStream(stdout)<<"   --maxRows                 Maximum rows if use \"timeStep\" or \"fpm\". (default - 50)\n";
 		QTextStream(stdout)<<"   --version                 Version string. (default - false)\n";
 		QTextStream(stdout)<<"   --logLevel                FFMPEG log level. (default - -8 (QUIET))\n";
 		return 4;
@@ -348,9 +355,11 @@ int main(int argc, char *argv[]){
 	int timeEnd = timeEndT.msecsTo(QTime::fromString(offsetEnd,"hh:mm:ss"));
 	int length = fullLength - (timeBegin+timeEnd);
 
-	if (timeStep != "00:00:00"){
+	if ((timeStep != "00:00:00") or (fpm > .0001)){
 		QTime timeStepT (0,0,0,0);
-		int tStep = timeStepT.msecsTo(QTime::fromString(timeStep,"hh:mm:ss"));
+		int tStep;
+		tStep = timeStepT.msecsTo (QTime::fromString(timeStep,"hh:mm:ss"));
+		if (fpm > .0001) tStep = 60000 / fpm;
 		vertCount = (length / tStep) / horCount;
 		vertCount++;
 		if (vertCount > maxRows) vertCount = maxRows;
@@ -373,12 +382,11 @@ int main(int argc, char *argv[]){
 		
 	QFont headerFont (fontHeaderName, fontHeaderSize, fontHeaderWeight, fontHeaderItalic);
 	QFontMetrics fm (headerFont);
-	int headerH=(fontHeaderSize+(double)8)*5;
+	int headerH=(fontHeaderSize+(double)5)*5;
 	int headerX=listBorder+frameBorder;
 
 	if (! descr.isEmpty()) headerH=(fontHeaderSize+(double)5)*7;
 
-//Correction border
 	int kFrameBorder=3;
 	if (! header){
 		headerH=0;
@@ -419,8 +427,8 @@ int main(int argc, char *argv[]){
 		QString videoInfo = video->getVInfo();
 		QString audioInfo = video->getAInfo();
 
-		int step=fontHeaderSize+4, num=1, offs=8;
-		int dx = fontHeaderSize*12;
+		int step=fontHeaderSize+1, num=1, offs=8;
+		int dx = fontHeaderSize*10;
 		
 		QImage imText (imList.width()-(listBorder*2+frameBorder*2),headerH, QImage::Format_ARGB32);
 		imText.fill(0);
@@ -477,9 +485,9 @@ int main(int argc, char *argv[]){
 				pStamp.setPen (getColorFromString (fontFrameColor));
 				pStamp.setFont (QFont (fontFrameName, fontFrameSize, fontFrameWeight, fontFrameItalic));
 				QString curTime;
-				if (stampStartFlag) curTime = QTime (QTime (0,0,0).fromString (stampStart, "hh:mm:ss")).addMSecs (pos).toString ("hh:mm:ss") + " (" + QTime (0,0,0).addMSecs (pos).toString ("hh:mm:ss") +")";
-				else curTime = QTime (0,0,0).addMSecs (pos).toString ("hh:mm:ss");
-                pStamp.drawText (imStamp.rect(), textFlag, curTime);
+				if (stampStartFlag) curTime = QTime(QTime ().fromString (stampStart, "hh:mm:ss")).addMSecs(pos).toString("hh:mm:ss") + " (" + QTime().addMSecs(pos).toString("hh:mm:ss") +")";
+				else curTime = QTime().addMSecs(pos).toString("hh:mm:ss");
+				pStamp.drawText (imStamp.rect(), textFlag, curTime);
 				pStamp.end();
 				QPainter pFrame(&imFrame);
 				QImage imStampShadow = getShadow (imStamp, fontFrameShadowInt, getColorFromString (fontFrameShadowColor));

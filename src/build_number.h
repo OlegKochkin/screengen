@@ -1,2 +1,2 @@
-#define VERSION_NUMBER "1.12"
-#define BUILD_NUMBER "2023.08.02"
+#define VERSION_NUMBER "1.13"
+#define BUILD_NUMBER "2023.08.03"
