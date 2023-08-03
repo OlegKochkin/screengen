@@ -380,7 +380,7 @@ int main(int argc, char *argv[]){
 		
 	QFont headerFont (fontHeaderName, fontHeaderSize, fontHeaderWeight, fontHeaderItalic);
 	QFontMetrics fm (headerFont);
-	int headerH=(fontHeaderSize+(double)5)*5;
+	int headerH=(fontHeaderSize+(double)5)*6;
 	int headerX=listBorder+frameBorder;
 
 	if (! descr.isEmpty()) headerH=(fontHeaderSize+(double)5)*7;
@@ -425,8 +425,8 @@ int main(int argc, char *argv[]){
 		QString videoInfo = video->getVInfo();
 		QString audioInfo = video->getAInfo();
 
-		int step=fontHeaderSize+1, num=1, offs=8;
-		int dx = fontHeaderSize*10;
+		int step=fontHeaderSize+4, num=1, offs=8;
+		int dx = fontHeaderSize*12;
 		
 		QImage imText (imList.width()-(listBorder*2+frameBorder*2),headerH, QImage::Format_ARGB32);
 		imText.fill(0);
@@ -437,7 +437,7 @@ int main(int argc, char *argv[]){
 		pText.setPen (tPen);
 		if (! descr.isEmpty()){
 			pText.drawText (10, num*step+offs, descr);
-			pText.drawLine (10, step+offs*2, fm.horizontalAdvance(descr)+20, step+offs*2);
+ 			pText.drawLine (10, step+offs*2, fm.horizontalAdvance(descr)+20, step+offs*2);
 			num+=2;
 			}
 		pText.drawText(10,num*step+offs,QObject::tr("File name:"));
@@ -470,7 +470,7 @@ int main(int argc, char *argv[]){
 		
 // Frames
 	int numFrame=0;
-	
+
 	for (int vi = 0;vi < vertCount;vi++){
 		for (int hi = 0;hi < horCount;hi++){
 			int pos = length / (frames-1) * numFrame + timeBegin;
@@ -483,8 +483,8 @@ int main(int argc, char *argv[]){
 				pStamp.setPen (getColorFromString (fontFrameColor));
 				pStamp.setFont (QFont (fontFrameName, fontFrameSize, fontFrameWeight, fontFrameItalic));
 				QString curTime;
-				if (stampStartFlag) curTime = QTime(QTime ().fromString (stampStart, "hh:mm:ss")).addMSecs(pos).toString("hh:mm:ss") + " (" + QTime().addMSecs(pos).toString("hh:mm:ss") +")";
-				else curTime = QTime().addMSecs(pos).toString("hh:mm:ss");
+				if (stampStartFlag) curTime = QTime(QTime ().fromString (stampStart, "hh:mm:ss")).addMSecs(pos).toString("hh:mm:ss") + " (" + QTime(0,0,0,0).addMSecs(pos).toString("hh:mm:ss") +")";
+				else curTime = QTime(0,0,0,0).addMSecs(pos).toString("hh:mm:ss");
 				pStamp.drawText (imStamp.rect(), textFlag, curTime);
 				pStamp.end();
 				QPainter pFrame(&imFrame);
