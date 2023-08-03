@@ -1,7 +1,5 @@
 INSTALL
 
-https://github.com/OlegKochkin/screengen
-
 Depends: qt5-qtbase, qt5-qtbase-devel, ffmpeg, ffmpeg-devel
 
 $ git clone https://github.com/OlegKochkin/screengen
